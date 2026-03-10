@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>XAUUSD SNIPER TERMINAL | MC ANTHONIO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        body { background-color: #020202; color: #00FF41; font-family: 'JetBrains Mono', monospace; }
+        .bloomberg-border { border: 1px solid #1a1a1a; }
+        .neon-text { text-shadow: 0 0 8px #00FF41; }
+    </style>
+</head>
+<body class="h-screen flex flex-col p-2">
+    <header class="flex justify-between items-center p-3 mb-2 bloomberg-border bg-black text-white">
+        <h1 class="text-xl font-bold uppercase tracking-tighter italic">XAUUSD <span class="text-yellow-500 underline">SNIPER</span></h1>
+        <div class="text-right">
+            <div id="clock" class="text-xl font-bold neon-text uppercase">--:--:--</div>
+            <div class="text-[9px] text-gray-500 font-bold uppercase italic">Antananarivo (UTC+3)</div>
+        </div>
+    </header>
+
+    <div class="flex-1 grid grid-cols-12 gap-2 overflow-hidden">
+        <div class="col-span-3 space-y-2">
+            <div class="h-1/2 bloomberg-border p-4 bg-black">
+                <h2 class="text-[10px] text-gray-500 mb-6 uppercase border-b border-gray-900 pb-1">Sentiment Real-Time</h2>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-red-500">70% SHORT</div>
+                    <p class="text-[9px] text-gray-400 mt-2 italic font-bold">MODE CONTRARISTE ACTIVÉ</p>
+                </div>
+            </div>
+            <div class="h-1/2 bloomberg-border p-4 bg-black">
+                <h2 class="text-[10px] text-gray-500 mb-2 uppercase border-b border-gray-900 pb-1">Analyse Technique</h2>
+                <div class="space-y-4 text-[10px] mt-4 uppercase">
+                    <div class="flex justify-between"><span>COT BIAS:</span> <span class="text-green-400">BULLISH</span></div>
+                    <div class="flex justify-between"><span>TREND H4:</span> <span class="text-yellow-500 underline">ALIGNED</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-span-6 bloomberg-border bg-black relative">
+            <div id="tv_chart" class="h-full"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+            <script type="text/javascript">
+                new TradingView.widget({
+                    "autosize": true, "symbol": "OANDA:XAUUSD", "interval": "15",
+                    "timezone": "Africa/Nairobi", "theme": "dark", "style": "1",
+                    "locale": "fr", "container_id": "tv_chart"
+                });
+            </script>
+        </div>
+
+        <div class="col-span-3 space-y-2">
+            <div class="h-3/5 bloomberg-border p-5 bg-black border-t-2 border-t-green-500">
+                <h2 class="text-center text-[10px] text-gray-400 mb-8 uppercase italic underline font-bold">VVIP Signal Box</h2>
+                <div class="text-center mb-6">
+                    <span class="text-[9px] text-gray-500">PROBABILITÉ</span>
+                    <div class="text-5xl font-bold text-white">91%</div>
+                </div>
+                <div class="space-y-3 text-xs border-t border-gray-800 pt-4">
+                    <div class="flex justify-between italic text-green-400 font-bold"><span>TARGET:</span> <span>+150 PIPS</span></div>
+                    <div class="flex justify-between italic text-red-400"><span>STOP:</span> <span>60 PIPS</span></div>
+                </div>
+            </div>
+            <div class="h-2/5 bloomberg-border p-4 bg-[#050505]">
+                <textarea id="copyBox" class="w-full h-24 bg-black border border-gray-800 text-[10px] p-2 text-gray-400">🚀 GOLD VVIP SIGNAL 🚀
+Type: BUY NOW
+Condition: Sentiment 70% Short
+© Mc Anthonio Sniper</textarea>
+                <button onclick="copySignal()" class="w-full mt-3 bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-3 text-[10px] rounded uppercase">COPIER POUR TELEGRAM</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const opt = { timeZone: "Indian/Antananarivo", hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            document.getElementById('clock').innerText = new Intl.DateTimeFormat('fr-FR', opt).format(new Date());
+        }
+        setInterval(updateClock, 1000); updateClock();
+        function copySignal() { const cb = document.getElementById("copyBox"); cb.select(); document.execCommand("copy"); alert("✅ Signal copié !"); }
+    </script>
+</body>
+  </html>
