@@ -1,177 +1,45 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="mg">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XAUUSD SNIPER VVIP - Mc Anthonio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root { 
-            --bg: #0a0a0a; 
-            --panel: #141414; 
-            --gold: #ffcc00; 
-            --green: #00ff88; 
-            --red: #ff4444; 
-            --text: #ffffff; 
-        }
-        body { 
-            background: var(--bg); 
-            color: var(--text); 
-            font-family: 'Inter', sans-serif; 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            overflow: hidden; 
-        }
-        header { 
-            padding: 15px 20px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            border-bottom: 2px solid #333; 
-            background: #000; 
-        }
-        .logo { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: bold; letter-spacing: 2px; }
-        .logo span { color: var(--gold); }
-        
-        .main-container { 
-            display: grid; 
-            grid-template-columns: 280px 1fr 340px; 
-            flex: 1; 
-            gap: 12px; 
-            padding: 12px; 
-        }
-        .panel { 
-            background: var(--panel); 
-            border: 1px solid #222; 
-            padding: 18px; 
-            border-radius: 8px; 
-            display: flex; 
-            flex-direction: column;
-        }
-        .label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 5px; }
-        .value { font-size: 24px; font-weight: bold; margin-bottom: 15px; font-family: 'Orbitron', sans-serif; }
-        
-        .status-live { 
-            color: var(--green); 
-            font-size: 12px; 
-            font-weight: bold; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px;
-        }
-        .dot { height: 8px; width: 8px; background-color: var(--green); border-radius: 50%; display: inline-block; animation: blink 1.5s infinite; }
-        
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-
-        .chart-container { width: 100%; height: 100%; border-radius: 4px; overflow: hidden; }
-        
-        .signal-card { 
-            background: #000; 
-            border: 1px solid #333; 
-            padding: 15px; 
-            border-left: 4px solid var(--gold);
-            margin: 20px 0;
-        }
-        
-        .btn-telegram { 
-            display: block; 
-            width: 100%; 
-            padding: 15px; 
-            background: #0088cc; 
-            color: #fff; 
-            text-align: center; 
-            text-decoration: none; 
-            border-radius: 4px; 
-            font-weight: bold; 
-            font-family: 'Orbitron', sans-serif;
-            transition: 0.3s;
-        }
-        .btn-telegram:hover { background: #00aaff; transform: translateY(-2px); }
-
-        @media (max-width: 1024px) { 
-            .main-container { grid-template-columns: 1fr; overflow-y: auto; } 
-            .chart-container { height: 450px; } 
-        }
+    <title>MC ANTHONIO - XAUUSD VVIP TERMINAL</title>
+    <meta http-equiv="refresh" content="30"> <style>
+        body { background: #050505; color: #ffcc00; font-family: 'Helvetica', sans-serif; margin: 0; padding: 20px; }
+        .terminal { border: 2px solid #333; background: #000; padding: 25px; border-radius: 12px; max-width: 800px; margin: auto; box-shadow: 0 0 30px rgba(255, 204, 0, 0.1); }
+        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #ffcc00; padding-bottom: 10px; margin-bottom: 25px; font-weight: bold; }
+        .price-box { font-size: 64px; color: #fff; text-align: center; margin: 30px 0; font-family: 'Courier New', monospace; }
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .box { background: #0a0a0a; border: 1px solid #222; border-left: 5px solid #ffcc00; padding: 15px; }
+        .btn-vvip { display: block; background: #ffcc00; color: #000; text-align: center; padding: 20px; text-decoration: none; font-weight: bold; border-radius: 8px; margin-top: 25px; text-transform: uppercase; }
+        .footer { margin-top: 30px; font-size: 10px; color: #444; text-align: center; }
     </style>
 </head>
 <body>
-
-<header>
-    <div class="logo">XAUUSD <span>SNIPER</span></div>
-    <div id="clock" style="color: var(--gold); font-family: 'Orbitron'; font-size: 18px;">20:32:30</div>
-</header>
-
-<div class="main-container">
-    <div class="panel">
-        <div class="label">Source de Données</div>
-        <div class="value" style="font-size: 18px;">MYFXBOOK LIVE</div>
-        
-        <div class="label">Seuil de Détection</div>
-        <div class="value" style="color: var(--gold);">60%</div>
-        
-        <div class="label">Stratégie</div>
-        <div class="value" style="font-size: 16px; color: var(--green);">CONTRARIAN SMC</div>
-        
-        <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid #333;">
-            <div class="status-live"><span class="dot"></span> SYSTÈME OPÉRATIONNEL</div>
-            <p style="font-size: 10px; color: #666; margin-top: 5px;">Scan automatique toutes les 15 min</p>
+    <div class="terminal">
+        <div class="header">
+            <span>MC ANTHONIO INSTITUTIONAL v6.0</span>
+            <span>{{TIME}} (MADAGASCAR)</span>
         </div>
-    </div>
-
-    <div class="panel" style="padding: 0; background: #000;">
-        <div id="tradingview_chart" class="chart-container"></div>
-    </div>
-
-    <div class="panel">
-        <div class="label">Dernière Alerte</div>
-        <div class="signal-card">
-            <span style="color: var(--gold); font-weight: bold;">[MODE VEILLE]</span><br>
-            Analyse des zones de liquidité en cours...
+        
+        <div class="data-grid">
+            <div class="box">
+                <div style="font-size: 10px; color: #666;">FLUX COT BANQUES</div>
+                <div style="font-size: 16px; color: #fff;">{{COT_BIAS}}</div>
+            </div>
+            <div class="box">
+                <div style="font-size: 10px; color: #666;">SENTIMENT MYFXBOOK</div>
+                <div style="font-size: 16px; color: #ff4444;">{{SENTIMENT}}% SHORT</div>
+            </div>
         </div>
 
-        <div class="label">Objectifs Moyens</div>
-        <div style="margin: 10px 0; font-size: 14px; line-height: 1.8;">
-            🚀 TP 1 : <span style="color: var(--green);">+100 Pips</span><br>
-            🔥 TP 2 : <span style="color: var(--green);">+150 Pips</span><br>
-            🛡️ SL : <span style="color: var(--red);">Smart Liquidity</span>
+        <div class="price-box">
+            <div style="font-size: 12px; color: #ffcc00; letter-spacing: 5px;">XAU/USD LIVE</div>
+            ${{PRICE}}
         </div>
 
-        <p style="font-size: 11px; color: #888; margin: 20px 0;">
-            Le bot exécute uniquement lorsque la foule dépasse 60% de sentiment opposé.
-        </p>
-
-        <a href="https://t.me/McAnthonio" target="_blank" class="btn-telegram">REJOINDRE LE CANAL VVIP</a>
+        <a href="https://t.me/mcanthonio" class="btn-vvip">Tsindrio eto Raha te hahita ny signal feno</a>
+        
+        <div class="footer">© 2026 MC ANTHONIO - 10,000$ ARCHITECTURE</div>
     </div>
-</div>
-
-<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-<script type="text/javascript">
-    // Horloge temps réel (Antananarivo)
-    function updateClock() {
-        const now = new Date();
-        const options = { timeZone: 'Indian/Antananarivo', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-        document.getElementById('clock').textContent = now.toLocaleTimeString('fr-FR', options);
-    }
-    setInterval(updateClock, 1000);
-
-    // Intégration TradingView
-    new TradingView.widget({
-        "autosize": true,
-        "symbol": "OANDA:XAUUSD",
-        "interval": "15",
-        "timezone": "Africa/Addis_Ababa",
-        "theme": "dark",
-        "style": "1",
-        "locale": "fr",
-        "toolbar_bg": "#f1f3f6",
-        "enable_publishing": false,
-        "hide_top_toolbar": false,
-        "save_image": false,
-        "container_id": "tradingview_chart"
-    });
-</script>
-
 </body>
-    </html>
+</html>
