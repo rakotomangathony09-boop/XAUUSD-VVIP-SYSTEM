@@ -1,6 +1,2 @@
 requests
-pyTelegramBotAPI
-pandas
 pytz
-beautifulsoup4
-flask
