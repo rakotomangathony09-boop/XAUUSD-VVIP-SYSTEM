@@ -2,44 +2,43 @@
 <html lang="mg">
 <head>
     <meta charset="UTF-8">
-    <title>MC ANTHONIO - XAUUSD VVIP TERMINAL</title>
-    <meta http-equiv="refresh" content="30"> <style>
-        body { background: #050505; color: #ffcc00; font-family: 'Helvetica', sans-serif; margin: 0; padding: 20px; }
-        .terminal { border: 2px solid #333; background: #000; padding: 25px; border-radius: 12px; max-width: 800px; margin: auto; box-shadow: 0 0 30px rgba(255, 204, 0, 0.1); }
-        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #ffcc00; padding-bottom: 10px; margin-bottom: 25px; font-weight: bold; }
-        .price-box { font-size: 64px; color: #fff; text-align: center; margin: 30px 0; font-family: 'Courier New', monospace; }
-        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .box { background: #0a0a0a; border: 1px solid #222; border-left: 5px solid #ffcc00; padding: 15px; }
-        .btn-vvip { display: block; background: #ffcc00; color: #000; text-align: center; padding: 20px; text-decoration: none; font-weight: bold; border-radius: 8px; margin-top: 25px; text-transform: uppercase; }
-        .footer { margin-top: 30px; font-size: 10px; color: #444; text-align: center; }
+    <title>MC ANTHONIO - VVIP TERMINAL</title>
+    <meta http-equiv="refresh" content="30">
+    <style>
+        body { background: #000; color: #ffcc00; font-family: 'Courier New', monospace; margin: 0; padding: 20px; }
+        .terminal { border: 1px solid #333; background: #050505; padding: 20px; border-radius: 5px; max-width: 900px; margin: auto; }
+        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #ffcc00; padding-bottom: 10px; }
+        .status { color: #00ff00; font-size: 12px; margin: 10px 0; }
+        .price-box { font-size: 70px; color: #fff; text-align: center; margin: 30px 0; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .box { background: #0a0a0a; border: 1px solid #222; padding: 15px; }
+        .report { margin-top: 20px; background: #111; padding: 15px; border-left: 4px solid #ffcc00; }
+        .btn-vvip { display: block; background: #ffcc00; color: #000; text-align: center; padding: 18px; text-decoration: none; font-weight: bold; margin-top: 20px; }
     </style>
 </head>
 <body>
     <div class="terminal">
         <div class="header">
             <span>MC ANTHONIO INSTITUTIONAL v6.0</span>
-            <span>{{TIME}} (MADAGASCAR)</span>
+            <span>{{TIME}} (MG)</span>
         </div>
-        
-        <div class="data-grid">
+        <div class="status">● ANALYSE EN COURS : JUDAS MODEL SCANNER</div>
+        <div class="price-box">$ {{PRICE}}</div>
+        <div class="grid">
             <div class="box">
-                <div style="font-size: 10px; color: #666;">FLUX COT BANQUES</div>
-                <div style="font-size: 16px; color: #fff;">{{COT_BIAS}}</div>
+                <div style="font-size: 10px; color: #666;">SENTIMENT RETAIL</div>
+                <div style="font-size: 18px; color: #ff4444;">{{SENTIMENT}}% SHORT</div>
             </div>
             <div class="box">
-                <div style="font-size: 10px; color: #666;">SENTIMENT MYFXBOOK</div>
-                <div style="font-size: 16px; color: #ff4444;">{{SENTIMENT}}% SHORT</div>
+                <div style="font-size: 10px; color: #666;">BIAIS COT</div>
+                <div style="font-size: 18px;">{{COT_BIAS}}</div>
             </div>
         </div>
-
-        <div class="price-box">
-            <div style="font-size: 12px; color: #ffcc00; letter-spacing: 5px;">XAU/USD LIVE</div>
-            ${{PRICE}}
+        <div class="report">
+            <div style="font-weight: bold; margin-bottom: 5px;">RÉSUMÉ D'ANALYSE DU JOUR</div>
+            <div style="color: #ccc; font-size: 13px;">{{DAY_SUMMARY}}</div>
         </div>
-
-        <a href="https://t.me/mcanthonio" class="btn-vvip">Tsindrio eto Raha te hahita ny signal feno</a>
-        
-        <div class="footer">© 2026 MC ANTHONIO - 10,000$ ARCHITECTURE</div>
+        <a href="https://t.me/mcanthonio" class="btn-vvip">TSINDRIO ETO RAHA TE HAHITA NY SIGNAL FENO</a>
     </div>
 </body>
-</html>
+            </html>
