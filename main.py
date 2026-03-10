@@ -1,92 +1,55 @@
-import requests
-import os
-import time
-import threading
+import requests, os, time, threading, pytz
+from datetime import datetime
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-# --- CONFIGURATION SÉCURISÉE ---
+MADAGASCAR_TZ = pytz.timezone('Indian/Antananarivo')
 TOKEN = os.getenv("TELEGRAM_TOKEN")
 CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 API_KEY = os.getenv("TWELVE_DATA_API_KEY")
-EMAIL = os.getenv("MYFXBOOK_EMAIL")
-PASSWORD = os.getenv("MYFXBOOK_PASSWORD")
+MYFX_USER = os.getenv("MYFXBOOK_EMAIL")
+MYFX_PASS = os.getenv("MYFXBOOK_PASSWORD")
 
-# --- SERVEUR ANTI-ERREUR RENDER (PORT 10000) ---
-class HealthHandler(BaseHTTPRequestHandler):
+state = {"price": "0.00", "sentiment": "50", "cot": "BULLISH"}
+
+def update_data():
+    try:
+        # Prix
+        p = requests.get(f"https://api.twelvedata.com/price?symbol=XAU/USD&apikey={API_KEY}").json()
+        state["price"] = p.get('price', state["price"])
+        # Sentiment & COT (Via Myfxbook)
+        log = requests.get(f"https://api.myfxbook.com/api/login.json?email={MYFX_USER}&password={MYFX_PASS}").json()
+        if not log.get('error'):
+            out = requests.get(f"https://api.myfxbook.com/api/get-community-outlook.json?session={log['session']}").json()
+            for s in out.get('symbols', []):
+                if s['name'] == "XAUUSD":
+                    state["sentiment"] = s['shortPercentage']
+                    state["cot"] = "INSTITUTIONAL BUY" if int(state["sentiment"]) > 60 else "INSTITUTIONAL SELL"
+    except: pass
+
+class BloombergServer(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
+        self.send_header("Content-type", "text/html")
         self.end_headers()
-        self.wfile.write(b"Sniper Bot Active")
+        
+        # Lecture du fichier HTML séparé
+        with open("index.html", "r", encoding="utf-8") as f:
+            content = f.read()
+        
+        # Remplacement des données dynamiques
+        content = content.replace("{{PRICE}}", state["price"])
+        content = content.replace("{{SENTIMENT}}", state["sentiment"])
+        content = content.replace("{{COT_BIAS}}", state["cot"])
+        content = content.replace("{{TIME}}", datetime.now(MADAGASCAR_TZ).strftime('%H:%M:%S'))
+        
+        self.send_header("Content-Length", len(content))
+        self.wfile.write(content.encode())
 
-def run_server():
-    server = HTTPServer(('0.0.0.0', 10000), HealthHandler)
-    server.serve_forever()
-
-threading.Thread(target=run_server, daemon=True).start()
-
-# --- FONCTIONS TECHNIQUES ---
-def send_msg(text):
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    requests.post(url, data={"chat_id": CHAT_ID, "text": text, "parse_mode": "Markdown"})
-
-def get_gold_price():
-    try:
-        url = f"https://api.twelvedata.com/price?symbol=XAU/USD&apikey={API_KEY}"
-        return float(requests.get(url, timeout=10).json()['price'])
-    except: return None
-
-# --- SYSTÈME DE SUIVI (TRACKER) ---
-def monitor_trade(side, entry, tp, sl):
-    print(f"📡 Suivi du trade {side} activé...")
+def sniper_engine():
     while True:
-        current_price = get_gold_price()
-        if not current_price: continue
-
-        if side == "BUY":
-            if current_price >= tp:
-                send_msg(f"✅ **TP TOUCHÉ !** 💰\n---\n🎯 Signal : BUY\n📍 Prix : {current_price}\n✨ Profit sécurisé !\n---\n© Mc Anthonio")
-                break
-            if current_price <= sl:
-                send_msg(f"❌ **SL TOUCHÉ**\n---\nLe marché a retourné. On attend le prochain setup.\n© Mc Anthonio")
-                break
-        elif side == "SELL":
-            if current_price <= tp:
-                send_msg(f"✅ **TP TOUCHÉ !** 💰\n---\n🎯 Signal : SELL\n📍 Prix : {current_price}\n✨ Profit sécurisé !\n---\n© Mc Anthonio")
-                break
-            if current_price >= sl:
-                send_msg(f"❌ **SL TOUCHÉ**\n---\n© Mc Anthonio")
-                break
-        time.sleep(60) # Vérification chaque minute
-
-# --- LOGIQUE DE SIGNAL ---
-def execute_sniper():
-    # Force Signal au démarrage pour test
-    send_msg("🚀 **FORCE SIGNAL TEST**\n---\nTerminal Render : Connecté ✅\nGroupe Telegram : Lié ✅\nStratégie : Sniper VVIP\n---\n© Mc Anthonio Sniper")
-    
-    price = get_gold_price()
-    if not price: return
-
-    # Ici la stratégie (Exemple 60% sentiment)
-    # Pour le test, on simule un signal immédiat
-    side = "BUY"
-    tp = round(price + 2.0, 2)
-    sl = round(price - 1.5, 2)
-    
-    msg = (f"🎯 **SNIPER SIGNAL VVIP** 🚀\n"
-           f"--------------------------\n"
-           f"🚀 TYPE: {side} NOW\n"
-           f"📍 ENTRY: {price}\n"
-           f"✅ TP: {tp}\n"
-           f"🛡️ SL: {sl}\n"
-           f"--------------------------\n"
-           f"© Mc Anthonio Sniper")
-    
-    send_msg(msg)
-    # Lance le suivi sans bloquer le reste du programme
-    threading.Thread(target=monitor_trade, args=(side, price, tp, sl), daemon=True).start()
+        update_data()
+        time.sleep(60)
 
 if __name__ == "__main__":
-    print("Robot lancé...")
-    execute_sniper()
-    while True:
-        time.sleep(3600)
+    threading.Thread(target=lambda: HTTPServer(('0.0.0.0', 10000), BloombergServer).serve_forever(), daemon=True).start()
+    sniper_engine()
