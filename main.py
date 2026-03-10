@@ -1,12 +1,25 @@
 import os
 import time
+import threading
 import requests
 import telebot
 from datetime import datetime
 import pytz
 from bs4 import BeautifulSoup
+from flask import Flask
 
-# VARIABLES D'ENVIRONNEMENT (Configurées sur Render)
+# --- CONFIGURATION SERVEUR POUR LE PLAN GRATUIT RENDER ---
+app = Flask(__name__)
+
+@app.route('/')
+def health_check():
+    return "🔥 Mc Anthonio Sniper Engine est en ligne et analyse le Gold !", 200
+
+def run_flask():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
+
+# --- CONFIGURATION SNIPER ---
 TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 API_KEY = os.getenv('TWELVE_DATA_TOKEN')
@@ -15,7 +28,7 @@ bot = telebot.TeleBot(TOKEN)
 mada_tz = pytz.timezone('Indian/Antananarivo')
 
 def get_live_sentiment():
-    """Scraping MyFXBook pour le sentiment réel de l'Or"""
+    """Scraping réel du sentiment MyFXBook"""
     try:
         url = "https://www.myfxbook.com/community/outlook"
         headers = {'User-Agent': 'Mozilla/5.0'}
@@ -32,31 +45,31 @@ def get_live_sentiment():
         return 0
 
 def get_live_price():
-    """Prix réel XAU/USD via Twelve Data API"""
+    """Prix réel XAU/USD via Twelve Data"""
     try:
         url = f"https://api.twelvedata.com/price?symbol=XAU/USD&apikey={API_KEY}"
         r = requests.get(url, timeout=10)
         data = r.json()
         return float(data['price'])
     except Exception as e:
-        print(f"Erreur Prix TwelveData: {e}")
+        print(f"Erreur Prix: {e}")
         return None
 
 def is_market_open():
     now = datetime.now(mada_tz)
-    # Marché fermé : Samedi et Dimanche jusqu'à 23h (Mada)
+    # Fermé le Samedi et Dimanche matin (heure Mada)
     if now.weekday() == 5 or (now.weekday() == 6 and now.hour < 23):
         return False
     return True
 
 def send_sniper_signal(price, sentiment):
-    """Envoi du signal réel uniquement"""
+    """Envoi du signal réel basé sur l'analyse"""
     tp = round(price + 15.0, 2)
     sl = round(price - 6.0, 2)
     msg = (
         f"🚀 **XAUUSD SNIPER VVIP** 🚀\n"
         f"━━━━━━━━━━━━━━━\n"
-        f"🎯 TYPE: **BUY NOW**\n"
+        f"📍 TYPE: **BUY NOW**\n"
         f"💰 ENTRY: {price}\n"
         f"✅ TP: {tp}\n"
         f"🛑 SL: {sl}\n"
@@ -67,27 +80,31 @@ def send_sniper_signal(price, sentiment):
     )
     bot.send_message(CHAT_ID, msg, parse_mode='Markdown')
 
-if __name__ == "__main__":
-    print("🔥 MC ANTHONIO ENGINE : MODE ANALYSE RÉELLE DÉMARRÉ")
+def trading_loop():
+    print("🔥 ANALYSE RÉELLE ACTIVÉE - ATTENTE DU SEUIL 70%")
     while True:
         if is_market_open():
             sentiment = get_live_sentiment()
             price = get_live_price()
             
-            # Log de surveillance dans Render
-            current_time = datetime.now(mada_tz).strftime('%H:%M')
-            print(f"[{current_time}] Sentiment: {sentiment}% | Prix: {price}")
+            print(f"[{datetime.now(mada_tz).strftime('%H:%M')}] Sentiment: {sentiment}% | Prix: {price}")
 
-            # DÉCLENCHEMENT : UNIQUEMENT SI SENTIMENT >= 70%
+            # DÉCLENCHEMENT RÉEL : SEUIL 70%
             if sentiment >= 70 and price:
                 try:
                     send_sniper_signal(price, sentiment)
-                    print("✅ SIGNAL DÉPLOYÉ SUR LE CANAL VVIP")
-                    # On attend 4 heures avant de chercher le prochain signal
-                    time.sleep(14400) 
+                    print("🎯 SIGNAL ENVOYÉ AUX VVIP")
+                    time.sleep(14400) # Pause 4h pour éviter le sur-trading
+                except Exception as e:
+                    print(f"Erreur Telegram: {e}")
             
-            # Analyse toutes les 15 minutes
-            time.sleep(900) 
+            time.sleep(900) # Analyse toutes les 15 minutes
         else:
-            print("💤 Week-end : Marché fermé.")
+            print("💤 Marché fermé.")
             time.sleep(3600)
+
+if __name__ == "__main__":
+    # Lancement du serveur Web en arrière-plan (pour Render Free)
+    threading.Thread(target=run_flask).start()
+    # Lancement de la boucle de trading
+    trading_loop()
