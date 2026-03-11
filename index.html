@@ -2,44 +2,57 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>ANTHONIO VVIP TERMINAL</title>
+    <title>ANTHONIO MICHEL RAKOTOMANGA INSTITUTIONAL</title>
+    <meta http-equiv="refresh" content="30">
     <style>
-        body { background: #000; color: #ffcc00; font-family: monospace; margin: 0; padding: 10px; }
-        .terminal { border: 2px solid #ffcc00; background: #050505; padding: 15px; max-width: 900px; margin: auto; }
-        .news-box { border: 1px dashed #ff4444; padding: 15px; text-align: center; background: #1a0000; margin-bottom: 15px; }
-        .countdown { font-size: 45px; color: #ff0000; font-weight: bold; }
-        .chart-container { height: 400px; border: 1px solid #333; margin: 15px 0; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .info-card { border: 1px solid #333; padding: 12px; background: #0a0a0a; border-left: 4px solid #ffcc00; }
-        .signal-area { border: 2px solid #ffcc00; padding: 20px; text-align: center; background: #111; margin-top: 15px; }
-        .signal-status { font-size: 24px; color: #00ff00; font-weight: bold; }
+        body { background: #000; color: #ffcc00; font-family: 'Courier New', monospace; margin: 0; padding: 10px; }
+        .terminal { border: 2px solid #ffcc00; background: #050505; padding: 15px; max-width: 800px; margin: auto; }
+        .header { font-size: 11px; color: #666; display: flex; justify-content: space-between; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        .news-box { border: 1px dashed #ff4444; padding: 15px; text-align: center; margin: 15px 0; }
+        .countdown { font-size: 70px; color: #ff0000; font-weight: bold; text-shadow: 0 0 15px #ff0000; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 10px; }
+        .card { border: 1px solid #ffcc00; padding: 10px; background: #0a0a0a; }
+        .label { font-size: 10px; color: #777; text-transform: uppercase; }
+        .value { font-size: 18px; font-weight: bold; margin-top: 5px; }
+        .signal-box { border: 2px solid #ffcc00; padding: 20px; text-align: center; margin-top: 15px; }
+        .btn-tg { display: block; background: #ffcc00; color: #000; text-decoration: none; padding: 15px; margin-top: 10px; font-weight: bold; border-radius: 5px; font-size: 16px; }
     </style>
 </head>
 <body>
     <div class="terminal">
-        <div style="display:flex; justify-content:space-between; font-size:12px; color:#666;">
-            <span>INSTITUTIONAL ALGO V7.5</span><span>{{TIME}} (EAT)</span>
+        <div class="header">
+            <span>ANTHONIO MICHEL RAKOTOMANGA INSTITUTIONAL v7.0</span>
+            <span>{{TIME}} (EAT)</span>
         </div>
+
         <div class="news-box">
-            <div style="font-size:10px; color:#ff4444;">PROCHAINE NEWS USD</div>
-            <div style="font-size:18px; color:#fff;">{{NEWS_NAME}}</div>
+            <div class="label" style="color:#ff4444;">PROCHAINE NEWS USD (HIGH IMPACT)</div>
+            <div style="font-size: 14px; color: #fff;">{{NEWS_NAME}}</div>
             <div class="countdown">{{COUNTDOWN}}</div>
         </div>
-        <div class="chart-container">
-            <div id="tv_chart" style="height:100%;"></div>
+
+        <div style="height: 350px; border: 1px solid #333;">
+            <div id="tv_chart" style="height: 100%;"></div>
             <script src="https://s3.tradingview.com/tv.js"></script>
             <script>new TradingView.widget({"autosize": true,"symbol": "OANDA:XAUUSD","interval": "15","timezone": "Africa/Nairobi","theme": "dark","style": "1","locale": "fr","container_id": "tv_chart"});</script>
         </div>
+
         <div class="grid">
-            <div class="info-card"><div style="font-size:10px; color:#777;">PROBABILITÉ</div><div style="font-size:16px; color:#fff;">{{PROBABILITY}}</div></div>
-            <div class="info-card"><div style="font-size:10px; color:#777;">SMC STATUS</div><div style="font-size:16px; color:#fff;">{{STATUS}}</div></div>
+            <div class="card"><div class="label">SENTIMENT RETAIL</div><div class="value" style="color:#ff4444;">{{SENTIMENT}}</div></div>
+            <div class="card"><div class="label">BIAIS COT</div><div class="value" style="color:#00ff00;">{{BIAIS}}</div></div>
+            <div class="card"><div class="label">ALGO ENGINE</div><div class="value">JUDAS SWING V7</div></div>
+            <div class="card"><div class="label">SOURCE DATA</div><div class="value" style="font-size:12px;">OANDA LIVE (PROB: {{PROBABILITY}})</div></div>
         </div>
-        <div class="signal-area">
-            <div style="font-size:10px; color:#777;">MOTEUR VVIP</div>
-            <div class="signal-status">{{JUDAS_SIGNAL}}</div>
-            <div style="color:#00d4ff; margin-top:10px;">{{SUGGESTION}}</div>
+
+        <div class="signal-box">
+            <div class="label">ÉTAT DU SIGNAL VVIP</div>
+            <div style="font-size: 28px; color: #00ff00; font-weight: bold; text-shadow: 0 0 10px #00ff00;">{{JUDAS_SIGNAL}}</div>
+            <div style="color:#fff; font-size: 12px; margin-top: 5px;">{{SUGGESTION}}</div>
         </div>
-        <div style="text-align:center; font-size:10px; color:#444; margin-top:20px;">PROPRIÉTÉ DE ANTHONIO MICHEL RAKOTOMANGA</div>
+
+        <a href="https://t.me/TON_BOT" class="btn-tg">Tsindrio eto Raha mila signal vvip complet</a>
+
+        <div style="text-align:center; font-size:9px; color:#444; margin-top:15px;">© 2026 ANTHONIO MICHEL RAKOTOMANGA</div>
     </div>
 </body>
-                </html>
+</html>
