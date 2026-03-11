@@ -2,19 +2,19 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>MC ANTHONIO VVIP</title>
+    <title>MC ANTHONIO - VVIP TERMINAL</title>
     <meta http-equiv="refresh" content="30">
     <style>
         body { background: #000; color: #ffcc00; font-family: 'Courier New', monospace; margin: 0; padding: 15px; }
         .terminal { border: 1px solid #333; background: #050505; padding: 20px; border-radius: 8px; max-width: 900px; margin: auto; }
         .header { border-bottom: 2px solid #ffcc00; padding-bottom: 10px; display: flex; justify-content: space-between; font-size: 14px; }
-        .chart-container { width: 100%; height: 400px; margin: 20px 0; border: 1px solid #222; }
-        .price-display { font-size: 45px; color: #fff; text-align: center; margin: 20px 0; font-weight: bold; }
+        .chart-box { width: 100%; height: 400px; margin: 20px 0; border: 1px solid #222; }
+        .price-val { font-size: 50px; color: #fff; text-align: center; margin: 20px 0; font-weight: bold; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .box { border: 1px solid #222; padding: 15px; background: #0a0a0a; border-left: 3px solid #ffcc00; }
         .label { font-size: 10px; color: #666; text-transform: uppercase; margin-bottom: 5px; }
-        .summary { margin-top: 20px; padding: 15px; border-left: 4px solid #ffcc00; background: #111; font-size: 13px; color: #ccc; }
-        .btn { display: block; background: #ffcc00; color: #000; text-align: center; padding: 15px; text-decoration: none; font-weight: bold; margin-top: 20px; border-radius: 4px; }
+        .summary { margin-top: 20px; padding: 15px; border-left: 4px solid #ffcc00; background: #111; font-size: 13px; line-height: 1.4; }
+        .btn { display: block; background: #ffcc00; color: #000; text-align: center; padding: 18px; text-decoration: none; font-weight: bold; margin-top: 20px; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -24,7 +24,7 @@
             <span style="color:#fff;">{{TIME}} (MG)</span>
         </div>
 
-        <div class="chart-container">
+        <div class="chart-box">
             <div id="tv_chart"></div>
             <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
             <script type="text/javascript">
@@ -36,7 +36,7 @@
             </script>
         </div>
 
-        <div class="price-display">$ {{PRICE}}</div>
+        <div class="price-val">$ {{PRICE}}</div>
 
         <div class="grid">
             <div class="box">
@@ -57,4 +57,4 @@
         <a href="https://t.me/mcanthonio" class="btn">ACCÉDER AU SIGNAL SNIPER VVIP</a>
     </div>
 </body>
-            </html>
+    </html>
