@@ -6,9 +6,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 MADAGASCAR_TZ = pytz.timezone('Indian/Antananarivo')
 
 state = {
-    "price": "2165.40", "sentiment": "64", "cot_bias": "BULLISH", 
-    "ob": "B:14.2 | A:9.5", "news_name": "SCANNING...", "countdown": "00:00:00", 
-    "judas_signal": "SCANNING", "status": "Initialisation des serveurs...",
+    "news_name": "SCANNING...", "countdown": "00:00:00", 
+    "judas_signal": "SCANNING", "status": "Vérification des flux institutionnels...",
     "news_time": None, "prep_sent": False
 }
 
@@ -23,18 +22,8 @@ def send_tg(msg):
 def update_engine():
     while True:
         try:
-            api_key = os.getenv("TWELVE_DATA_API_KEY")
             fn_key = os.getenv("FINNHUB_API_KEY")
-
-            # 1. PRIX RÉEL XAU/USD (Tentative de connexion)
-            p_res = requests.get(f"https://api.twelvedata.com/price?symbol=XAU/USD&apikey={api_key}", timeout=10).json()
-            if 'price' in p_res:
-                state["price"] = f"{float(p_res['price']):.2f}"
-                state["status"] = "Flux Temps Réel Connecté ✅"
-            else:
-                state["status"] = "Synchronisation avec MT5..."
-
-            # 2. NEWS & COUNTDOWN (FINNHUB)
+            # 1. RÉCUPÉRATION DES NEWS USD (FINNHUB)
             c_date = datetime.now().strftime('%Y-%m-%d')
             n_res = requests.get(f"https://finnhub.io/api/v1/calendar/economic?from={c_date}&to={c_date}&token={fn_key}", timeout=10).json()
             now_utc = datetime.now(pytz.utc)
@@ -49,15 +38,16 @@ def update_engine():
                         diff = e_time - now_utc
                         state["countdown"] = str(timedelta(seconds=max(0, int(diff.total_seconds()))))
                         
-                        # Alerte Automatique Telegram
-                        if 110 < int(diff.total_seconds()) < 130 and not state["prep_sent"]:
+                        # ALERTE AUTO TELEGRAM 2 MIN AVANT NEWS
+                        if 115 < int(diff.total_seconds()) < 130 and not state["prep_sent"]:
                             send_tg(f"⚠️ *PRÉPARATION VVIP*\nNews : {state['news_name']}\nManipulation Judas attendue dans 2 min.")
                             state["prep_sent"] = True
                         break
+            state["status"] = "Moteur Algorithmique Actif ✅"
         except:
-            state["status"] = "Optimisation du flux en cours..."
+            state["status"] = "Recherche de liquidité..."
         
-        time.sleep(60) # Fréquence de sécurité pour éviter le bannissement API
+        time.sleep(60)
 
 class VVIPHandler(BaseHTTPRequestHandler):
     def do_HEAD(self): self.send_response(200); self.end_headers()
@@ -67,8 +57,6 @@ class VVIPHandler(BaseHTTPRequestHandler):
             with open("index.html", "r", encoding="utf-8") as f: html = f.read()
             mapping = {
                 "{{TIME}}": datetime.now(MADAGASCAR_TZ).strftime('%H:%M:%S'),
-                "{{PRICE}}": state["price"], "{{SENTIMENT}}": state["sentiment"],
-                "{{COT_BIAS}}": state["cot_bias"], "{{OB}}": state["ob"],
                 "{{NEWS_NAME}}": state["news_name"], "{{COUNTDOWN}}": state["countdown"],
                 "{{JUDAS_SIGNAL}}": state["judas_signal"], "{{STATUS}}": state["status"]
             }
