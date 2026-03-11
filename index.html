@@ -1,81 +1,60 @@
 <!DOCTYPE html>
-<html lang="mg">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>MC ANTHONIO - VVIP INSTITUTIONAL TERMINAL</title>
-    <meta http-equiv="refresh" content="60">
+    <title>MC ANTHONIO VVIP</title>
+    <meta http-equiv="refresh" content="30">
     <style>
-        body { background: #000; color: #ffcc00; font-family: 'Courier New', monospace; margin: 0; padding: 20px; }
-        .terminal { border: 1px solid #333; background: #050505; padding: 20px; border-radius: 8px; max-width: 1000px; margin: auto; box-shadow: 0 0 15px rgba(255, 204, 0, 0.1); }
-        .header { border-bottom: 2px solid #ffcc00; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        
-        /* Section Graphique */
-        .chart-container { width: 100%; height: 450px; margin: 20px 0; border: 1px solid #222; border-radius: 4px; overflow: hidden; }
-        
-        .price-box { font-size: 50px; color: #fff; text-align: center; margin: 20px 0; font-weight: bold; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        body { background: #000; color: #ffcc00; font-family: 'Courier New', monospace; margin: 0; padding: 15px; }
+        .terminal { border: 1px solid #333; background: #050505; padding: 20px; border-radius: 8px; max-width: 900px; margin: auto; }
+        .header { border-bottom: 2px solid #ffcc00; padding-bottom: 10px; display: flex; justify-content: space-between; font-size: 14px; }
+        .chart-container { width: 100%; height: 400px; margin: 20px 0; border: 1px solid #222; }
+        .price-display { font-size: 45px; color: #fff; text-align: center; margin: 20px 0; font-weight: bold; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .box { border: 1px solid #222; padding: 15px; background: #0a0a0a; border-left: 3px solid #ffcc00; }
         .label { font-size: 10px; color: #666; text-transform: uppercase; margin-bottom: 5px; }
-        
-        .feature-box { margin-top: 15px; padding: 10px; background: #111; font-size: 12px; border: 1px dashed #333; display: grid; grid-template-columns: 1fr 1fr; }
-        .summary { margin-top: 20px; padding: 15px; border-left: 4px solid #ffcc00; background: #0d0d0d; line-height: 1.4; }
-        .btn { display: block; background: #ffcc00; color: #000; text-align: center; padding: 18px; text-decoration: none; font-weight: bold; margin-top: 20px; border-radius: 4px; font-size: 16px; }
+        .summary { margin-top: 20px; padding: 15px; border-left: 4px solid #ffcc00; background: #111; font-size: 13px; color: #ccc; }
+        .btn { display: block; background: #ffcc00; color: #000; text-align: center; padding: 15px; text-decoration: none; font-weight: bold; margin-top: 20px; border-radius: 4px; }
     </style>
 </head>
 <body>
     <div class="terminal">
         <div class="header">
             <span>MC ANTHONIO INSTITUTIONAL v6.0</span>
-            <span style="color: #fff;">{{TIME}} (MG)</span>
+            <span style="color:#fff;">{{TIME}} (MG)</span>
         </div>
 
         <div class="chart-container">
-            <div id="tradingview_widget"></div>
+            <div id="tv_chart"></div>
             <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
             <script type="text/javascript">
-            new TradingView.widget({
-              "width": "100%",
-              "height": 450,
-              "symbol": "OANDA:XAUUSD",
-              "interval": "15",
-              "timezone": "Africa/Addis_Ababa",
-              "theme": "dark",
-              "style": "1",
-              "locale": "fr",
-              "toolbar_bg": "#f1f3f6",
-              "enable_publishing": false,
-              "hide_side_toolbar": false,
-              "allow_symbol_change": true,
-              "container_id": "tradingview_widget"
-            });
+                new TradingView.widget({
+                    "width": "100%", "height": 400, "symbol": "OANDA:XAUUSD",
+                    "interval": "15", "theme": "dark", "style": "1", "locale": "fr",
+                    "container_id": "tv_chart"
+                });
             </script>
         </div>
-        <div class="price-box">$ {{PRICE}}</div>
+
+        <div class="price-display">$ {{PRICE}}</div>
 
         <div class="grid">
             <div class="box">
-                <div class="label">SENTIMENT RETAIL (MYFXBOOK)</div>
+                <div class="label">SENTIMENT RETAIL</div>
                 <div style="color:#ff4444; font-size:18px; font-weight:bold;">{{SENTIMENT}}% SHORT</div>
             </div>
             <div class="box">
-                <div class="label">BIAIS COT (INSTITUTIONNEL)</div>
-                <div style="font-size:18px; font-weight:bold; color:#00ff00;">{{COT_BIAS}}</div>
+                <div class="label">BIAIS COT</div>
+                <div style="color:#00ff00; font-size:18px; font-weight:bold;">{{COT_BIAS}}</div>
             </div>
-        </div>
-
-        <div class="feature-box">
-            <div>📡 SCAN LIQUIDITÉ : <span style="color:#00ff00;">ACTIF</span></div>
-            <div>⚖️ RISK MGMT : <span style="color:#00ff00;">BE/TP/SL</span></div>
-            <div>🧩 JUDAS MODEL : <span style="color:#ffcc00;">SCANNING</span></div>
-            <div>📊 OANDA DATA : <span style="color:#00ff00;">CONNECTED</span></div>
         </div>
 
         <div class="summary">
             <div style="font-weight:bold; color:#ffcc00; margin-bottom:5px;">RÉSUMÉ D'ANALYSE DU JOUR</div>
-            <div style="font-size:13px; color:#ccc;">{{DAY_SUMMARY}}</div>
+            {{DAY_SUMMARY}}
         </div>
 
         <a href="https://t.me/mcanthonio" class="btn">ACCÉDER AU SIGNAL SNIPER VVIP</a>
     </div>
 </body>
-    </html>
+            </html>
