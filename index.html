@@ -1,33 +1,172 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="mg">
 <head>
     <meta charset="UTF-8">
-    <title>NEWS VVIP TERMINAL</title>
-    <meta http-equiv="refresh" content="1">
+    <title>MC ANTHONIO - VVIP JUDAS ENGINE</title>
+    <meta http-equiv="refresh" content="30">
     <style>
-        body { background: #000; color: #ffcc00; font-family: 'Courier New', monospace; padding: 20px; }
-        .terminal { border: 2px solid #ffcc00; padding: 20px; max-width: 900px; margin: auto; background: #050505; }
-        .news-header { border: 1px dashed #ffcc00; padding: 15px; text-align: center; margin-bottom: 20px; }
-        .countdown { font-size: 60px; color: #ff0000; font-weight: bold; margin: 10px 0; }
-        .price { font-size: 50px; color: #fff; text-align: center; }
-        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; text-align: center; }
-        .box { border: 1px solid #333; padding: 10px; background: #0a0a0a; }
+        body { 
+            background: #000; 
+            color: #ffcc00; 
+            font-family: 'Courier New', monospace; 
+            margin: 0; 
+            padding: 15px; 
+        }
+        .terminal { 
+            border: 2px solid #ffcc00; 
+            background: #050505; 
+            padding: 20px; 
+            max-width: 950px; 
+            margin: auto; 
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+        }
+        
+        /* Section News & Compte à rebours */
+        .news-header { 
+            border: 1px dashed #ff4444; 
+            padding: 15px; 
+            text-align: center; 
+            margin-bottom: 20px; 
+            background: #1a0000; 
+        }
+        .countdown { 
+            font-size: 55px; 
+            color: #ff0000; 
+            font-weight: bold; 
+            text-shadow: 0 0 10px #ff0000;
+        }
+        
+        /* Affichage du Prix Principal */
+        .price-display { 
+            font-size: 60px; 
+            color: #fff; 
+            text-align: center; 
+            margin: 20px 0; 
+            border-bottom: 1px solid #222; 
+            padding-bottom: 10px;
+        }
+        
+        /* Grille des données de fonctionnement interne */
+        .internal-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin: 20px 0; 
+        }
+        .box { 
+            border: 1px solid #333; 
+            padding: 15px; 
+            background: #0a0a0a; 
+            border-left: 4px solid #ffcc00; 
+        }
+        .label { 
+            font-size: 11px; 
+            color: #777; 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            letter-spacing: 1px;
+        }
+        .val { 
+            font-size: 20px; 
+            font-weight: bold; 
+        }
+
+        /* Status du Signal Judas */
+        .judas-alert { 
+            border: 2px solid #ffcc00; 
+            padding: 25px; 
+            text-align: center; 
+            background: #111; 
+            margin: 20px 0; 
+        }
+        .signal-text { 
+            font-size: 28px; 
+            color: #00ff00; 
+            font-weight: bold;
+            text-shadow: 0 0 15px #00ff00; 
+        }
+
+        /* Section Appel à l'action (CTA) Telegram */
+        .cta-telegram { 
+            background: #ffcc00; 
+            color: #000; 
+            text-align: center; 
+            padding: 25px; 
+            font-size: 24px; 
+            font-weight: bold; 
+            text-decoration: none; 
+            display: block;
+            border-radius: 8px; 
+            margin-top: 30px; 
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
+        }
+        .cta-telegram:hover { 
+            background: #fff; 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Footer */
+        .footer-note {
+            margin-top: 25px; 
+            font-size: 10px; 
+            color: #444; 
+            text-align: center; 
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
     <div class="terminal">
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:#666; margin-bottom: 10px;">
+            <span>ANTHONIO MICHEL RAKOTOMANGA INSTITUTIONAL v6.0</span>
+            <span>{{TIME}} (MG)</span>
+        </div>
+
         <div class="news-header">
-            <div style="font-size: 14px; color: #888;">PROCHAINE NEWS USD (HIGH/MEDIUM)</div>
-            <div style="font-size: 20px; margin-top: 5px;">{{NEWS_NAME}}</div>
+            <div class="label" style="color:#ff4444;">PROCHAINE NEWS USD (HIGH/MEDIUM IMPACT)</div>
+            <div style="font-size: 20px; margin-bottom: 10px; color: #fff;">{{NEWS_NAME}}</div>
             <div class="countdown">{{COUNTDOWN}}</div>
         </div>
 
-        <div class="price">$ {{PRICE}}</div>
+        <div class="price-display">$ {{PRICE}}</div>
 
-        <div class="data-grid">
-            <div class="box">ORDER BOOK : <span style="color: #00ff00;">{{OB}}</span></div>
-            <div class="box">STATUS : <span style="color: #fff;">NEWS SCANNING</span></div>
+        <div class="internal-grid">
+            <div class="box">
+                <div class="label">SENTIMENT RETAIL (MYFXBOOK)</div>
+                <div class="val" style="color:#ff4444;">{{SENTIMENT}}% SHORT</div>
+            </div>
+            <div class="box">
+                <div class="label">BIAIS COT (INSTITUTIONNEL)</div>
+                <div class="val" style="color:#00ff00;">{{COT_BIAS}}</div>
+            </div>
+            <div class="box">
+                <div class="label">ORDER BOOK REAL-TIME (XII DATA)</div>
+                <div class="val" style="color:#fff;">{{OB}}</div>
+            </div>
+            <div class="box">
+                <div class="label">MODÈLE DE MARCHÉ ACTIF</div>
+                <div class="val" style="color:#ffcc00;">PO3 / JUDAS SWING</div>
+            </div>
+        </div>
+
+        <div class="judas-alert">
+            <div class="label">ÉTAT DU SIGNAL JUDAS VVIP</div>
+            <div class="signal-text">{{JUDAS_SIGNAL}}</div>
+            <div style="font-size: 13px; color: #aaa; margin-top: 10px; font-style: italic;">
+                {{STATUS}}
+            </div>
+        </div>
+
+        <a href="https://t.me/mcanthonio" class="cta-telegram">
+            Tsindrio eto Raha mila signal vvip complet
+        </a>
+
+        <div class="footer-note">
+            TRADING MODEL: SMC/ICT LIQUIDITY SWEEP - ALGORITHMIC ENGINE BY ANTHONIO MICHEL RAKOTOMANGA<br>
+            AUTHORIZED FOR VVIP MEMBERS ONLY - ACCESS SECURED via @mcanthonio
         </div>
     </div>
 </body>
-</html>
+    </html>
