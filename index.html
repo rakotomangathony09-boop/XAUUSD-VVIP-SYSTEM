@@ -1,79 +1,45 @@
 <!DOCTYPE html>
-<html lang="mg">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>ANTHONIO MICHEL RAKOTOMANGA - VVIP SYSTEM</title>
-    <meta http-equiv="refresh" content="60">
+    <title>ANTHONIO VVIP TERMINAL</title>
     <style>
-        body { background: #000; color: #ffcc00; font-family: 'Courier New', monospace; margin: 0; padding: 10px; overflow-x: hidden; }
-        .terminal { border: 2px solid #ffcc00; background: #050505; padding: 15px; max-width: 950px; margin: auto; box-shadow: 0 0 30px rgba(255, 204, 0, 0.15); }
-        .news-header { border: 1px dashed #ff4444; padding: 15px; text-align: center; margin-bottom: 15px; background: #1a0000; }
-        .countdown { font-size: 50px; color: #ff0000; font-weight: bold; text-shadow: 0 0 10px #ff0000; }
-        .chart-box { height: 450px; margin: 15px 0; border: 1px solid #333; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .box { border: 1px solid #333; padding: 15px; background: #0a0a0a; border-left: 4px solid #ffcc00; }
-        .label { font-size: 10px; color: #777; text-transform: uppercase; margin-bottom: 5px; }
-        .val { font-size: 18px; font-weight: bold; color: #fff; }
-        .judas-alert { border: 2px solid #ffcc00; padding: 25px; text-align: center; background: #111; margin: 15px 0; }
-        .signal-text { font-size: 26px; color: #00ff00; font-weight: bold; text-shadow: 0 0 15px #00ff00; }
-        .cta { background: #ffcc00; color: #000; text-align: center; padding: 25px; font-size: 22px; font-weight: bold; text-decoration: none; display: block; border-radius: 8px; transition: 0.3s; }
-        .cta:hover { background: #fff; transform: scale(1.02); }
-        .footer { margin-top: 20px; font-size: 10px; color: #444; text-align: center; }
+        body { background: #000; color: #ffcc00; font-family: monospace; margin: 0; padding: 10px; }
+        .terminal { border: 2px solid #ffcc00; background: #050505; padding: 15px; max-width: 900px; margin: auto; }
+        .news-box { border: 1px dashed #ff4444; padding: 15px; text-align: center; background: #1a0000; margin-bottom: 15px; }
+        .countdown { font-size: 45px; color: #ff0000; font-weight: bold; }
+        .chart-container { height: 400px; border: 1px solid #333; margin: 15px 0; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .info-card { border: 1px solid #333; padding: 12px; background: #0a0a0a; border-left: 4px solid #ffcc00; }
+        .signal-area { border: 2px solid #ffcc00; padding: 20px; text-align: center; background: #111; margin-top: 15px; }
+        .signal-status { font-size: 24px; color: #00ff00; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="terminal">
-        <div style="display:flex; justify-content:space-between; font-size:11px; color:#666; margin-bottom: 10px;">
-            <span>ANTHONIO MICHEL RAKOTOMANGA INSTITUTIONAL v7.0</span>
-            <span>{{TIME}} (EAT)</span>
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:#666;">
+            <span>INSTITUTIONAL ALGO V7.5</span><span>{{TIME}} (EAT)</span>
         </div>
-
-        <div class="news-header">
-            <div class="label" style="color:#ff4444;">PROCHAINE NEWS USD (HIGH IMPACT)</div>
-            <div style="font-size: 18px; color: #fff; margin: 5px 0;">{{NEWS_NAME}}</div>
+        <div class="news-box">
+            <div style="font-size:10px; color:#ff4444;">PROCHAINE NEWS USD</div>
+            <div style="font-size:18px; color:#fff;">{{NEWS_NAME}}</div>
             <div class="countdown">{{COUNTDOWN}}</div>
         </div>
-
-        <div class="chart-box">
-            <div id="tradingview_vvip" style="height: 100%;"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-            <script type="text/javascript">
-                new TradingView.widget({
-                    "autosize": true,
-                    "symbol": "OANDA:XAUUSD",
-                    "interval": "15",
-                    "timezone": "Africa/Nairobi",
-                    "theme": "dark",
-                    "style": "1",
-                    "locale": "fr",
-                    "toolbar_bg": "#f1f3f6",
-                    "enable_publishing": false,
-                    "hide_top_toolbar": false,
-                    "save_image": false,
-                    "container_id": "tradingview_vvip"
-                });
-            </script>
+        <div class="chart-container">
+            <div id="tv_chart" style="height:100%;"></div>
+            <script src="https://s3.tradingview.com/tv.js"></script>
+            <script>new TradingView.widget({"autosize": true,"symbol": "OANDA:XAUUSD","interval": "15","timezone": "Africa/Nairobi","theme": "dark","style": "1","locale": "fr","container_id": "tv_chart"});</script>
         </div>
-
         <div class="grid">
-            <div class="box"><div class="label">SENTIMENT RETAIL</div><div class="val" style="color:#ff4444;">68% SHORT</div></div>
-            <div class="box"><div class="label">BIAIS COT</div><div class="val" style="color:#00ff00;">BULLISH</div></div>
-            <div class="box"><div class="label">ALGO ENGINE</div><div class="val">JUDAS SWING V7</div></div>
-            <div class="box"><div class="label">SOURCE DATA</div><div class="val">OANDA LIVE (MT5 MATCH)</div></div>
+            <div class="info-card"><div style="font-size:10px; color:#777;">PROBABILITÉ</div><div style="font-size:16px; color:#fff;">{{PROBABILITY}}</div></div>
+            <div class="info-card"><div style="font-size:10px; color:#777;">SMC STATUS</div><div style="font-size:16px; color:#fff;">{{STATUS}}</div></div>
         </div>
-
-        <div class="judas-alert">
-            <div class="label">ÉTAT DU SIGNAL VVIP</div>
-            <div class="signal-text">{{JUDAS_SIGNAL}}</div>
-            <div style="font-size: 12px; color: #aaa; margin-top: 8px;">{{STATUS}}</div>
+        <div class="signal-area">
+            <div style="font-size:10px; color:#777;">MOTEUR VVIP</div>
+            <div class="signal-status">{{JUDAS_SIGNAL}}</div>
+            <div style="color:#00d4ff; margin-top:10px;">{{SUGGESTION}}</div>
         </div>
-
-        <a href="https://t.me/mcanthonio" class="cta">Tsindrio eto Raha mila signal vvip complet</a>
-        
-        <div class="footer">
-            © 2026 ANTHONIO MICHEL RAKOTOMANGA<br>
-            SMC/ICT ALGORITHMIC TRADING ENGINE - @mcanthonio
-        </div>
+        <div style="text-align:center; font-size:10px; color:#444; margin-top:20px;">PROPRIÉTÉ DE ANTHONIO MICHEL RAKOTOMANGA</div>
     </div>
 </body>
-                                                                                                    </html>
+                </html>
