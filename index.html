@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>ANTHONIO MICHEL RAKOTOMANGA - VVIP</title>
-    <meta http-equiv="refresh" content="20">
+    <meta http-equiv="refresh" content="45">
     <style>
         body { background: #000; color: #ffcc00; font-family: 'Courier New', monospace; margin: 0; padding: 15px; }
-        .terminal { border: 2px solid #ffcc00; background: #050505; padding: 20px; max-width: 900px; margin: auto; box-shadow: 0 0 20px rgba(255, 204, 0, 0.2); }
+        .terminal { border: 2px solid #ffcc00; background: #050505; padding: 20px; max-width: 900px; margin: auto; }
         .news-header { border: 1px dashed #ff4444; padding: 15px; text-align: center; margin-bottom: 20px; background: #1a0000; }
-        .countdown { font-size: 55px; color: #ff0000; font-weight: bold; text-shadow: 0 0 10px #ff0000; }
-        .price-display { font-size: 65px; color: #fff; text-align: center; margin: 20px 0; border-bottom: 1px solid #222; padding-bottom: 10px; }
-        .internal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .countdown { font-size: 55px; color: #ff0000; font-weight: bold; }
+        .price-display { font-size: 65px; color: #fff; text-align: center; margin: 20px 0; border-bottom: 1px solid #222; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
         .box { border: 1px solid #333; padding: 15px; background: #0a0a0a; border-left: 4px solid #ffcc00; }
-        .label { font-size: 11px; color: #777; text-transform: uppercase; margin-bottom: 8px; }
+        .label { font-size: 11px; color: #777; text-transform: uppercase; }
         .val { font-size: 20px; font-weight: bold; }
         .judas-alert { border: 2px solid #ffcc00; padding: 25px; text-align: center; background: #111; margin: 20px 0; }
-        .signal-text { font-size: 28px; color: #00ff00; font-weight: bold; text-shadow: 0 0 15px #00ff00; }
-        .cta-telegram { background: #ffcc00; color: #000; text-align: center; padding: 25px; font-size: 24px; font-weight: bold; text-decoration: none; display: block; border-radius: 8px; margin-top: 30px; transition: 0.3s; }
-        .cta-telegram:hover { background: #fff; transform: translateY(-3px); }
-        .footer-note { margin-top: 25px; font-size: 10px; color: #444; text-align: center; }
+        .signal-text { font-size: 28px; color: #00ff00; font-weight: bold; }
+        .cta { background: #ffcc00; color: #000; text-align: center; padding: 25px; font-size: 22px; font-weight: bold; text-decoration: none; display: block; border-radius: 8px; }
     </style>
 </head>
 <body>
@@ -28,24 +26,23 @@
             <span>{{TIME}} (MG)</span>
         </div>
         <div class="news-header">
-            <div style="font-size: 11px; color:#ff4444;">PROCHAINE NEWS USD (HIGH/MEDIUM IMPACT)</div>
-            <div style="font-size: 20px; margin: 10px 0; color: #fff;">{{NEWS_NAME}}</div>
+            <div style="font-size: 11px; color:#ff4444;">PROCHAINE NEWS USD</div>
+            <div style="font-size: 20px; color: #fff;">{{NEWS_NAME}}</div>
             <div class="countdown">{{COUNTDOWN}}</div>
         </div>
         <div class="price-display">$ {{PRICE}}</div>
-        <div class="internal-grid">
+        <div class="grid">
             <div class="box"><div class="label">SENTIMENT RETAIL</div><div class="val" style="color:#ff4444;">{{SENTIMENT}}% SHORT</div></div>
             <div class="box"><div class="label">BIAIS COT</div><div class="val" style="color:#00ff00;">{{COT_BIAS}}</div></div>
-            <div class="box"><div class="label">ORDER BOOK (XII)</div><div class="val">{{OB}}</div></div>
+            <div class="box"><div class="label">ORDER BOOK</div><div class="val">{{OB}}</div></div>
             <div class="box"><div class="label">MODÈLE</div><div class="val">PO3 / JUDAS SWING</div></div>
         </div>
         <div class="judas-alert">
-            <div class="label">ÉTAT DU SIGNAL JUDAS VVIP</div>
+            <div class="label">SIGNAL JUDAS VVIP</div>
             <div class="signal-text">{{JUDAS_SIGNAL}}</div>
-            <div style="font-size: 13px; color: #aaa; margin-top: 10px;">{{STATUS}}</div>
+            <div style="font-size: 13px; color: #aaa;">{{STATUS}}</div>
         </div>
-        <a href="https://t.me/mcanthonio" class="cta-telegram">Tsindrio eto Raha mila signal vvip complet</a>
-        <div class="footer-note">ALGORITHMIC ENGINE BY ANTHONIO MICHEL RAKOTOMANGA - SECURED via @mcanthonio</div>
+        <a href="https://t.me/mcanthonio" class="cta">Tsindrio eto Raha mila signal vvip complet</a>
     </div>
 </body>
     </html>
