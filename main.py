@@ -7,7 +7,7 @@ MADAGASCAR_TZ = pytz.timezone('Indian/Antananarivo')
 
 state = {
     "news_name": "SCANNING...", "countdown": "00:00:00", 
-    "judas_signal": "SCANNING", "status": "Vérification des flux institutionnels...",
+    "judas_signal": "SCANNING", "status": "Moteur Algorithmique Actif ✅",
     "news_time": None, "prep_sent": False
 }
 
@@ -23,7 +23,7 @@ def update_engine():
     while True:
         try:
             fn_key = os.getenv("FINNHUB_API_KEY")
-            # 1. RÉCUPÉRATION DES NEWS USD (FINNHUB)
+            # RÉCUPÉRATION DES NEWS USD (Impact élevé/moyen)
             c_date = datetime.now().strftime('%Y-%m-%d')
             n_res = requests.get(f"https://finnhub.io/api/v1/calendar/economic?from={c_date}&to={c_date}&token={fn_key}", timeout=10).json()
             now_utc = datetime.now(pytz.utc)
@@ -43,9 +43,8 @@ def update_engine():
                             send_tg(f"⚠️ *PRÉPARATION VVIP*\nNews : {state['news_name']}\nManipulation Judas attendue dans 2 min.")
                             state["prep_sent"] = True
                         break
-            state["status"] = "Moteur Algorithmique Actif ✅"
         except:
-            state["status"] = "Recherche de liquidité..."
+            state["status"] = "Synchronisation des flux..."
         
         time.sleep(60)
 
