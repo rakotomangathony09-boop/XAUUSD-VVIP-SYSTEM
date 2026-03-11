@@ -1,82 +1,91 @@
-import requests, os, time, threading, pytz, json
+import requests, os, time, threading, pytz
 from datetime import datetime, timedelta
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
+# Configuration Madagascar
 MADAGASCAR_TZ = pytz.timezone('Indian/Antananarivo')
 
+# État initial (Dynamique)
 state = {
-    "price": "2150.00", "sentiment": "50", "cot_bias": "NEUTRAL", "ob": "B:0.0 | A:0.0",
-    "news_name": "AUCUNE NEWS", "countdown": "00:00:00", "judas_signal": "SCANNING",
-    "status": "Connexion aux flux...", "news_time": None
+    "price": "CHARGEMENT...", "sentiment": "50", "cot_bias": "NEUTRAL", 
+    "ob": "B:0.0 | A:0.0", "news_name": "AUCUNE NEWS", "countdown": "00:00:00", 
+    "judas_signal": "SCANNING", "status": "Initialisation des flux...",
+    "news_time": None, "active_trade": False, "prep_sent": False
 }
 
-def clean_fetch():
-    """Récupération sécurisée pour éviter l'erreur 'Extra Data'."""
-    try:
-        api_key = os.getenv("TWELVE_DATA_API_KEY")
-        # 1. PRIX (XII DATA)
-        p_url = f"https://api.twelvedata.com/price?symbol=XAU/USD&apikey={api_key}"
-        p_res = requests.get(p_url, timeout=10).json()
-        if 'price' in p_res:
-            state["price"] = f"{float(p_res['price']):.2f}"
+def send_tg(msg):
+    token = os.getenv("TELEGRAM_BOT_TOKEN")
+    chat_id = os.getenv("TELEGRAM_CHAT_ID")
+    if token and chat_id:
+        url = f"https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}&text={msg}&parse_mode=Markdown"
+        try: requests.get(url, timeout=5)
+        except: pass
 
-        # 2. ORDER BOOK (XII DATA)
-        ob_url = f"https://api.twelvedata.com/order_book?symbol=XAU/USD&apikey={api_key}"
-        ob_res = requests.get(ob_url, timeout=10).json()
-        if 'bids' in ob_res:
-            b = sum([float(x['size']) for x in ob_res['bids'][:5]])
-            a = sum([float(x['size']) for x in ob_res['asks'][:5]])
-            state["ob"] = f"B:{b:.1f} | A:{a:.1f}"
-
-        # 3. NEWS (FINNHUB)
-        fn_key = os.getenv("FINNHUB_API_KEY")
-        c_date = datetime.now().strftime('%Y-%m-%d')
-        n_url = f"https://finnhub.io/api/v1/calendar/economic?from={c_date}&to={c_date}&token={fn_key}"
-        n_res = requests.get(n_url, timeout=10).json()
-        
-        now_utc = datetime.now(pytz.utc)
-        events = n_res.get('economicCalendar', [])
-        upcoming = [e for e in events if e['country'] == 'USD' and e['impact'] in ['high', 'medium']]
-        
-        if upcoming:
-            for e in sorted(upcoming, key=lambda x: x['time']):
-                e_time = datetime.fromisoformat(e['time'].replace('Z', '+00:00'))
-                if e_time > now_utc:
-                    state["news_name"] = e['event']
-                    state["news_time"] = e_time
-                    break
-
-        state["status"] = "Flux Temps Réel Connecté ✅"
-    except Exception as e:
-        state["status"] = f"Ajustement flux en cours..."
-
-def loop():
+def update_engine():
+    """Moteur de données ultra-robuste."""
     while True:
-        clean_fetch()
-        if state["news_time"]:
-            diff = state["news_time"] - datetime.now(pytz.utc)
-            state["countdown"] = str(timedelta(seconds=max(0, int(diff.total_seconds()))))
-        time.sleep(15)
+        try:
+            api_key = os.getenv("TWELVE_DATA_API_KEY")
+            fn_key = os.getenv("FINNHUB_API_KEY")
 
-class Handler(BaseHTTPRequestHandler):
+            # 1. PRIX RÉEL XAU/USD
+            p_res = requests.get(f"https://api.twelvedata.com/price?symbol=XAU/USD&apikey={api_key}", timeout=10).json()
+            if 'price' in p_res:
+                state["price"] = f"{float(p_res['price']):.2f}"
+                state["status"] = "Flux Temps Réel Connecté ✅"
+            elif 'message' in p_res:
+                state["status"] = "Limite API atteinte (Attente...)"
+
+            # 2. CALENDRIER NEWS (FINNHUB)
+            c_date = datetime.now().strftime('%Y-%m-%d')
+            n_res = requests.get(f"https://finnhub.io/api/v1/calendar/economic?from={c_date}&to={c_date}&token={fn_key}", timeout=10).json()
+            now_utc = datetime.now(pytz.utc)
+            upcoming = [e for e in n_res.get('economicCalendar', []) if e['country'] == 'USD' and e['impact'] in ['high', 'medium']]
+            
+            if upcoming:
+                for e in sorted(upcoming, key=lambda x: x['time']):
+                    e_time = datetime.fromisoformat(e['time'].replace('Z', '+00:00'))
+                    if e_time > now_utc:
+                        state["news_name"] = e['event']
+                        state["news_time"] = e_time
+                        break
+
+            # 3. CALCUL DU COMPTE À REBOURS
+            if state["news_time"]:
+                diff = state["news_time"] - now_utc
+                seconds_left = int(diff.total_seconds())
+                state["countdown"] = str(timedelta(seconds=max(0, seconds_left)))
+
+                # Alerte Telegram 2 min avant
+                if 115 < seconds_left < 125 and not state["prep_sent"]:
+                    send_tg(f"⚠️ *PRÉPARATION VVIP*\nNews : {state['news_name']}\nSignal imminent dans 2 minutes.")
+                    state["prep_sent"] = True
+
+        except Exception as e:
+            state["status"] = "Ajustement des flux..."
+        
+        time.sleep(15) # Fréquence optimale pour plan gratuit XII Data
+
+class VVIPServer(BaseHTTPRequestHandler):
     def do_HEAD(self): self.send_response(200); self.end_headers()
     def do_GET(self):
         self.send_response(200)
         self.send_header("Content-type", "text/html; charset=utf-8")
         self.end_headers()
-        with open("index.html", "r", encoding="utf-8") as f: html = f.read()
-        
-        mapping = {
-            "{{TIME}}": datetime.now(MADAGASCAR_TZ).strftime('%H:%M:%S'),
-            "{{PRICE}}": state["price"], "{{SENTIMENT}}": state["sentiment"],
-            "{{COT_BIAS}}": state["cot_bias"], "{{OB}}": state["ob"],
-            "{{NEWS_NAME}}": state["news_name"], "{{COUNTDOWN}}": state["countdown"],
-            "{{JUDAS_SIGNAL}}": state["judas_signal"], "{{STATUS}}": state["status"]
-        }
-        for k, v in mapping.items(): html = html.replace(k, str(v))
-        self.wfile.write(html.encode('utf-8'))
+        try:
+            with open("index.html", "r", encoding="utf-8") as f: html = f.read()
+            mapping = {
+                "{{TIME}}": datetime.now(MADAGASCAR_TZ).strftime('%H:%M:%S'),
+                "{{PRICE}}": state["price"], "{{SENTIMENT}}": state["sentiment"],
+                "{{COT_BIAS}}": state["cot_bias"], "{{OB}}": state["ob"],
+                "{{NEWS_NAME}}": state["news_name"], "{{COUNTDOWN}}": state["countdown"],
+                "{{JUDAS_SIGNAL}}": state["judas_signal"], "{{STATUS}}": state["status"]
+            }
+            for k, v in mapping.items(): html = html.replace(k, str(v))
+            self.wfile.write(html.encode('utf-8'))
+        except: pass
 
 if __name__ == "__main__":
-    threading.Thread(target=loop, daemon=True).start()
+    threading.Thread(target=update_engine, daemon=True).start()
     port = int(os.environ.get("PORT", 10000))
-    HTTPServer(('0.0.0.0', port), Handler).serve_forever()
+    HTTPServer(('0.0.0.0', port), VVIPServer).serve_forever()
