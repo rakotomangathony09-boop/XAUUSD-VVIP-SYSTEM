@@ -2,18 +2,17 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>MC ANTHONIO - VVIP TERMINAL</title>
+    <title>MC ANTHONIO VVIP TERMINAL</title>
     <meta http-equiv="refresh" content="30">
     <style>
         body { background: #000; color: #ffcc00; font-family: 'Courier New', monospace; margin: 0; padding: 15px; }
         .terminal { border: 1px solid #333; background: #050505; padding: 20px; border-radius: 8px; max-width: 900px; margin: auto; }
-        .header { border-bottom: 2px solid #ffcc00; padding-bottom: 10px; display: flex; justify-content: space-between; font-size: 14px; }
+        .header { border-bottom: 2px solid #ffcc00; padding-bottom: 10px; display: flex; justify-content: space-between; }
         .chart-box { width: 100%; height: 400px; margin: 20px 0; border: 1px solid #222; }
-        .price-val { font-size: 50px; color: #fff; text-align: center; margin: 20px 0; font-weight: bold; }
+        .price-display { font-size: 50px; color: #fff; text-align: center; margin: 20px 0; font-weight: bold; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .box { border: 1px solid #222; padding: 15px; background: #0a0a0a; border-left: 3px solid #ffcc00; }
-        .label { font-size: 10px; color: #666; text-transform: uppercase; margin-bottom: 5px; }
-        .summary { margin-top: 20px; padding: 15px; border-left: 4px solid #ffcc00; background: #111; font-size: 13px; line-height: 1.4; }
+        .summary { margin-top: 20px; padding: 15px; border-left: 4px solid #ffcc00; background: #111; font-size: 13px; }
         .btn { display: block; background: #ffcc00; color: #000; text-align: center; padding: 18px; text-decoration: none; font-weight: bold; margin-top: 20px; border-radius: 4px; }
     </style>
 </head>
@@ -30,27 +29,26 @@
             <script type="text/javascript">
                 new TradingView.widget({
                     "width": "100%", "height": 400, "symbol": "OANDA:XAUUSD",
-                    "interval": "15", "theme": "dark", "style": "1", "locale": "fr",
-                    "container_id": "tv_chart"
+                    "interval": "15", "theme": "dark", "style": "1", "locale": "fr", "container_id": "tv_chart"
                 });
             </script>
         </div>
 
-        <div class="price-val">$ {{PRICE}}</div>
+        <div class="price-display">$ {{PRICE}}</div>
 
         <div class="grid">
             <div class="box">
-                <div class="label">SENTIMENT RETAIL</div>
+                <div style="font-size:10px; color:#666;">SENTIMENT RETAIL</div>
                 <div style="color:#ff4444; font-size:18px; font-weight:bold;">{{SENTIMENT}}% SHORT</div>
             </div>
             <div class="box">
-                <div class="label">BIAIS COT</div>
+                <div style="font-size:10px; color:#666;">BIAIS COT</div>
                 <div style="color:#00ff00; font-size:18px; font-weight:bold;">{{COT_BIAS}}</div>
             </div>
         </div>
 
         <div class="summary">
-            <div style="font-weight:bold; color:#ffcc00; margin-bottom:5px;">RÉSUMÉ D'ANALYSE DU JOUR</div>
+            <div style="font-weight:bold; color:#ffcc00; margin-bottom:5px;">RÉSUMÉ D'ANALYSE</div>
             {{DAY_SUMMARY}}
         </div>
 
